@@ -3,10 +3,14 @@ package com.kimjinhwan.android.basicwidget;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.v7.app.AppCompatActivity;
+import android.text.InputType;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.RadioGroup;
+import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
@@ -17,6 +21,11 @@ public class MainActivity extends AppCompatActivity
     Button btnDog, btnPig, btnHorse;
     ToggleButton toggleButton;
     RadioGroup radioGroup; //라디오 버튼으로 다중선택을 하게 하는 행위는 표준 UI에 어긋남. (다중선택은 체크박스로 할 것.)
+    SeekBar seekBar;
+    TextView seekCount, seekCount2;
+
+    EditText editText;
+    Button btnNum, btnText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,14 +37,29 @@ public class MainActivity extends AppCompatActivity
         btnDog = (Button) findViewById(R.id.btnDog);
         btnPig = (Button) findViewById(R.id.btnPig);
         btnHorse = (Button) findViewById(R.id.btnHorse);
+        btnNum = (Button) findViewById(R.id.btnNum);
+        btnText = (Button) findViewById(R.id.btnText);
 
         toggleButton = (ToggleButton) findViewById(R.id.toggleButton);
         radioGroup = (RadioGroup) findViewById(R.id.radioGroup);
+        seekBar = (SeekBar) findViewById(R.id.seekBar);
+        seekCount = (TextView) findViewById(R.id.seekCount);
+        seekCount2 = (TextView) findViewById(R.id.seekCount2);
+        editText = (EditText) findViewById(R.id.editText);
 
         //3. 클릭리스너 연결
         btnDog.setOnClickListener(this);  //setOnClickListener에게 this(뭔가)를 넘겼다. 여기서 this는 MainActivity 클래스.
         btnPig.setOnClickListener(this);    // 리스너에 this(뭔가)를 넘겨주면 해당 이벤트가 발생시 this(뭔가)를 호출해준다.
         btnHorse.setOnClickListener(this);
+        btnNum.setOnClickListener(this);
+        btnText.setOnClickListener(this);
+
+
+        //* 키보드 속성 변경하기
+
+
+
+        seekBar.setOnSeekBarChangeListener(listener);
 
         toggleButton.setOnCheckedChangeListener(this);
 
@@ -53,6 +77,12 @@ public class MainActivity extends AppCompatActivity
                break;
            case R.id.btnHorse:
                Toast.makeText(this, "히힝~", Toast.LENGTH_SHORT).show();
+               break;
+           case R.id.btnNum:
+               editText.setInputType(InputType.TYPE_CLASS_NUMBER);
+               break;
+           case R.id.btnText:
+               editText.setInputType(InputType.TYPE_CLASS_TEXT);
                break;
 
        }
@@ -87,4 +117,24 @@ public class MainActivity extends AppCompatActivity
                 }
         }
     }
+
+    SeekBar.OnSeekBarChangeListener listener = new SeekBar.OnSeekBarChangeListener() {
+        @Override
+        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {    //onProgressChanged : seekBar에 변경사항이 있을 때마다 호출해줌
+            seekCount.setText(progress + "");                             //숫자값이 단독으로 들어가면 앱이 다운 됨.(안드로이드 스튜디오 버그)
+            seekCount2.setText(100-progress + "");
+        }
+
+        @Override
+        public void onStartTrackingTouch(SeekBar seekBar) {
+
+        }
+
+        @Override
+        public void onStopTrackingTouch(SeekBar seekBar) {
+
+        }
+    };
+
+
 }
